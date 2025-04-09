@@ -1,0 +1,54 @@
+#menu-lateral{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #020115;
+    z-index: 100;
+    transform: translateX(-200px);
+    transition: transform 0.3s ease-in-out;
+}
+
+#menu-lateral.ativa{
+    transform: translateX(0);
+}
+
+.btn-menu{
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+    width: 118vw;
+    height: 2.2rem;
+    background-color: #020115;
+}
+
+#img-menu{
+    width: 28px;
+    margin-left: 205px;
+    margin-top: 2px;
+}
+
+
+#menu-lateral ul{
+  list-style: nome;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+#menu-lateral ul li{
+    margin-bottom: 10px;
+}
+
+#menu-lateral ul li a{
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#menu-lateral ul li a:hover{
+    color: #ccc;
+}
+
+
