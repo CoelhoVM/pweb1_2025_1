@@ -1,9 +1,8 @@
-
 <?php
 
 include "./db.class.php"
 
-?>
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,85 +16,73 @@ include "./db.class.php"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
 
-<?php 
+<?php
 
-if(!empty($_POST)){
+if (!empty($_POST)) {
 
-    $db = new db();
-    $conn = $db->conn();
+    $db = new db(table_name: 'usuario');
 
-    $sql = "INSERT INTO usuario (nome,cpf,telefone,email) VALUES (?,?,?,?)";
+    $db->store(dados: $_POST);
 
-    $st = $conn->prepare(query: $sql);
+    header(header: 'lacation:./UsuarioList.php');
 
-    $st->execute(params: [
-        $_POST['nome'],
-        $_POST['cpf'],
-        $_POST['telefone'],
-        $_POST['email'],
-    ]);
-
-    echo $_POST['nome']. "<br>";
-    echo $_POST['email']. "<br>";
-    echo $_POST['telefone']. "<br>";
-    echo $_POST['cpf']. "<br>";
-
-    echo $_REQUEST['nome']. "<br>";
-    echo $_REQUEST['email']. "<br>";
-    echo $_REQUEST['telefone']. "<br>";
-    echo $_REQUEST['cpf']. "<br>";
 }
-
 
 ?>
 
 <body>
-    <div class="container">
-        <div class="row">
-         <p></p>
-        <h3>Formulário Usuário</h3>
 
-        <!-- http://localhost/php/site/UsuarioForm.php -->
-        <form action="" method="post">
-
-       <div class="row">
-
-        <div class="col-md-6">
-            <label for="" class="form-label">Nome</label>
-            <input type="text" name="nome" class="form-control">
-        </div>
-        <div class="col-md-6">
-            <label for="" class="form-label">Email</label>
-            <input type="text" name="email" class="form-control">
-        </div>
-        </div>
+    <div class="container" style="margin-top: 100px;">
 
         <div class="row">
-        <div class="col-md-6">
-            <label for="" class="form-label">CPF</label>
-            <input type="text" name="cpf" class="form-control">
-        </div>
-        <div class="col-md-6">
-            <label for="" class="form-label">Telefone</label>
-            <input type="text" name="telefone" class="form-control">
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <a href="/UsuarioList.php" class="btn btn-secundary">Voltar</a>
+            <p></p>
+
+            <h3>Formulário Usuário</h3>
+
+            <!-- http://localhost/php/site/UsuarioForm.php -->
+            <form action="" method="post">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Nome</label>
+                        <input type="text" name="nome" class="form-control">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Email</label>
+                        <input type="text" name="email" class="form-control">
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="" class="form-label">CPF</label>
+                        <input type="text" name="cpf" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Telefone</label>
+                        <input type="text" name="telefone" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <a href="./UsuarioList.php" class="btn btn-secundary">Voltar</a>
+                    </div>
+                </div>
+
+            </form>
+
         </div>
-      </div>
-        </form>
+
     </div>
-    </div>
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

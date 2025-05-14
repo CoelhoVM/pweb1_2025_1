@@ -1,3 +1,9 @@
+<?php
+
+include "./db.class.php"
+
+    ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,22 +18,18 @@
 
 <?php
 
-if (!empty($_POST)) {
+$db = new db(table_name: 'usuario');
 
-    echo $_POST['nome'] . "<br>";
-
-
-}
-
+$dados = $db->all();
 
 ?>
 
 <body>
-    <div class="container">
+
+    <div class="container" style="margin-top: 100px;">
 
         <div class="row">
 
-            
             <h3>Listagem Usuário</h3>
             <!-- http://localhost/php/site/UsuarioForm.php -->
 
@@ -51,7 +53,7 @@ if (!empty($_POST)) {
 
                     <div class="col">
                         <button type="submit" class="btn btn-primary">Buscar</button>
-                        <a href="/UsuarioForm.php" class="btn btn-secondary">Cadastrar</a>
+                        <a href="./UsuarioForm.php" class="btn btn-secondary">Cadastrar</a>
                     </div>
 
                 </div>
@@ -67,45 +69,43 @@ if (!empty($_POST)) {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">CPF</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Email</th>
                     </tr>
                 </thead>
 
                 <tbody>
 
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
+                    <?php
 
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
+                    foreach ($dados as $item) {
 
+                        echo "
                     <tr>
-                        <th scope="row">3</th>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>@social</td>
-                    </tr>
+                        <th scope='row'>$item->id</th>
+                        <td>$item->nome</td>
+                        <td>$item->cpf</td>
+                        <td>$item->telefone</td>
+                        <td>$item->email</td>
+                    </tr>";
+                    }
+
+                    ?>
 
                 </tbody>
+
             </table>
+
         </div>
+
     </div>
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
+
 </body>
 
 </html>
