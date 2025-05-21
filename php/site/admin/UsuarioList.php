@@ -1,8 +1,7 @@
 <?php
 
-include "./db.class.php"
-
-    ?>
+include "./db.class.php";
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,46 +11,58 @@ include "./db.class.php"
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
 
 <?php
 
-$db = new db(table_name: 'usuario');
+$db = new db('usuario');
 
-$dados = $db->all();
+if (!empty($_GET['id'])){
+
+    $db->destroy($_GET['id']);
+
+}
+
+if (!empty($_POST)){
+    $dados = $db->search($_POST);
+}else{
+    $dados = $db->all();
+}
 
 ?>
 
 <body>
-
-    <div class="container" style="margin-top: 100px;">
+    <div class="container">
 
         <div class="row">
 
             <h3>Listagem Usuário</h3>
-            <!-- http://localhost/php/site/UsuarioForm.php -->
-
-            <form action="" method="get">
+            <!-- http://localhost/pweb1_2025_1/php/site/admin/UsuarioList.php -->
+            <form action="./UsuarioList.php" method="post">
 
                 <div class="row">
 
-                    <div class="col-md-6">
-                        <label for="" class="form-label">Nome</label>
-                        <input type="text" name="nome" class="form-control">
+                    <div class="col-md-2">
+
+                        <select name="tipo" class="form-select">
+                            <option value="nome">Nome</option>
+                            <option value="cpf">CPF</option>
+                            <option value="telefone">Telefone</option>
+                        </select>
+
                     </div>
 
                     <div class="col-md-6">
-                        <label for="" class="form-label">Email</label>
-                        <input type="text" name="email" class="form-control">
+                        <input type="text" name="valor" placeholder="Pesquisar..." class="form-control">
                     </div>
 
                 </div>
 
-                <div class="row mt-4">
-
-                    <div class="col">
+                <div class="row">
+                    <div class="col mt-4">
                         <button type="submit" class="btn btn-primary">Buscar</button>
                         <a href="./UsuarioForm.php" class="btn btn-secondary">Cadastrar</a>
                     </div>
@@ -73,6 +84,8 @@ $dados = $db->all();
                         <th scope="col">CPF</th>
                         <th scope="col">Telefone</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Ação</th>
+                        <th scope="col">Ação</th>
                     </tr>
                 </thead>
 
@@ -83,13 +96,24 @@ $dados = $db->all();
                     foreach ($dados as $item) {
 
                         echo "
-                    <tr>
-                        <th scope='row'>$item->id</th>
-                        <td>$item->nome</td>
-                        <td>$item->cpf</td>
-                        <td>$item->telefone</td>
-                        <td>$item->email</td>
-                    </tr>";
+                        <tr>
+                            <th scope='row'>$item->id</th>
+                            <td>$item->nome</td>
+                            <td>$item->cpf</td>
+                            <td>$item->telefone</td>
+                            <td>$item->email</td>
+
+                            <td>
+                                <a href='./UsuarioForm.php?id=$item->id' >Editar</a>
+                            </td>
+
+                            <td>
+                                <a 
+                                onclick='return confirm(\"Deseja Excluir?\")'
+                                href='./UsuarioList.php?id=$item->id' >Deletar</a>
+                            </td>
+                        </tr>
+                        ";
                     }
 
                     ?>

@@ -1,17 +1,16 @@
 <?php
-
-include "./db.class.php"
-
-    ?>
+include "./db.class.php";
+?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -20,27 +19,27 @@ include "./db.class.php"
 
 if (!empty($_POST)) {
 
-    $db = new db(table_name: 'usuario');
+    $db = new db('usuario');
 
-    $db->store(dados: $_POST);
+    $db->store($_POST);
 
-    header(header: 'lacation:./UsuarioList.php');
+    header('location:./UsuarioList.php');
+}
 
+if (!empty($_GET['id'])){
+    $data = $db->find($_GET['id']);
 }
 
 ?>
 
 <body>
 
-    <div class="container" style="margin-top: 100px;">
+    <div class="container">
 
         <div class="row">
 
-            <p></p>
-
             <h3>Formulário Usuário</h3>
-
-            <!-- http://localhost/php/site/UsuarioForm.php -->
+            <!-- http://localhost/pweb1_2025_1/php/site/admin/UsuarioForm.php -->
             <form action="" method="post">
 
                 <div class="row">
@@ -52,7 +51,7 @@ if (!empty($_POST)) {
 
                     <div class="col-md-6">
                         <label for="" class="form-label">Email</label>
-                        <input type="text" name="email" class="form-control">
+                        <input type="email" name="email" class="form-control">
                     </div>
 
                 </div>
@@ -69,9 +68,9 @@ if (!empty($_POST)) {
                 </div>
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col mt-4">
                         <button type="submit" class="btn btn-primary">Salvar</button>
-                        <a href="./UsuarioList.php" class="btn btn-secundary">Voltar</a>
+                        <a href="./UsuarioList.php" class="btn btn-secondary">Voltar</a>
                     </div>
                 </div>
 
@@ -81,8 +80,13 @@ if (!empty($_POST)) {
 
     </div>
 
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
+
 </body>
+
 </html>

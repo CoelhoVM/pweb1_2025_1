@@ -28,7 +28,7 @@ class db
                 [
                     PDO::ATTR_ERRMODE,
                     PDO::ERRMODE_EXCEPTION,
-                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+                    PDO::MYSQL_ATTR_INIT_COMMAND => " SET NAMES utf8"
                 ]
             );
 
@@ -39,21 +39,21 @@ class db
         }
     }
 
-    public function all(): array
+    public function all()
     {
         $conn = $this->conn();
 
-        $sql = "SELECT * FROM usuario";
+        $sql = "SELECT * FROM $this->table_name";
 
-        $st = $conn->prepare(query: $sql);
-
+        $st = $conn->prepare($sql);
         $st->execute();
 
         return $st->fetchAll(PDO::FETCH_CLASS);
-
+        
     }
 
-    public function store($dados): void
+    public function store($dados)
+
     {
 
         $conn = $this->conn();
@@ -63,37 +63,110 @@ class db
         $flag = 0;
 
         $arrayDados = [];
-
-        foreach($dados as $campo =>$valor){
-
-            if($flag ==0){
+        foreach ($dados as $campo => $valor) {
+            if ($flag == 0) {
                 $sql .= "$campo";
-            }else{
+            } else {
                 $sql .= ", $campo";
             }
             $flag = 1;
         }
 
-        $sql .=") VALUES (";
+        $sql .= ") VALUES (";
 
         $flag = 0;
-
-        foreach($dados as $campo =>$valor){
-
-            if($flag ==0){
+        foreach ($dados as $campo => $valor) {
+            if ($flag == 0) {
                 $sql .= "?";
-            }else{
+            } else {
                 $sql .= ", ?";
             }
             $flag = 1;
             $arrayDados[] = $valor;
         }
 
-        $sql .=") (";
+        $sql .= ") ";
+
+        $st = $conn->prepare($sql);
+        $st->execute($arrayDados);
+
+    }
+
+    public function update($dados)
+
+    {
+
+        $conn = $this->conn();
+        // 
+        $sql = "UPDATE $this->table_name SET";
+
+        $flag = 0;
+        $arrayDados = [];
+
+        foreach ($dados as $campo => $valor) {
+            if ($flag == 0) {
+                $sql .= "$campo = ?";
+            } else {
+                $sql .= ", $campo = ?";
+            }
+            $flag = 1;
+            $arrayDados[] = $valor;
+        }
+
+        $sql .= ") ";
+
+        $st = $conn->prepare($sql);
+        $st->execute($arrayDados);
+
+    }
+
+    public function destroy($id): array
+    {
+        $conn = $this->conn();
+
+        $sql = "DELETE FROM $this->table_name WHERE id = ?";
 
         $st = $conn->prepare(query: $sql);
 
-        $st->execute(params: $arrayDados);
+        $st->execute([$id]);
+
+        return $st->fetchAll(PDO::FETCH_CLASS);
 
     }
+
+    public function search($dados)
+    {
+
+        $campo = $dados['tipo'];
+        $valor = $dados['valor'];
+
+        $conn = $this->conn();
+
+        $sql = "SELECT * FROM $this->table_name WHERE $campo LIKE ?";
+
+        $st = $conn->prepare($sql);
+
+        $st->execute(["%$valor%"]);
+
+        return $st->fetchAll(PDO::FETCH_CLASS);
+        
+    }
+
+    public function find($id): array
+    {
+        $conn = $this->conn();
+
+        $sql = "SELECT * FROM $this->table_name WHERE id = ?";
+
+        $st = $conn->prepare(query: $sql);
+
+        $st->execute([$id]);
+
+        return $st->fetchObject();
+
+    }
+
+   
+
+
 }
