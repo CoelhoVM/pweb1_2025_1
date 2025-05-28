@@ -53,15 +53,12 @@ class db
     }
 
     public function store($dados)
-
     {
-
+        unset($dados['id']); //remove o campo id 
         $conn = $this->conn();
 
         $sql = "INSERT INTO $this->table_name (";
-
         $flag = 0;
-
         $arrayDados = [];
         foreach ($dados as $campo => $valor) {
             if ($flag == 0) {
@@ -93,13 +90,13 @@ class db
     }
 
     public function update($dados)
-
     {
+        $id = $dados['id'];
 
         $conn = $this->conn();
-        // 
-        $sql = "UPDATE $this->table_name SET";
 
+        $sql = "UPDATE $this->table_name SET ";
+        
         $flag = 0;
         $arrayDados = [];
 
@@ -113,11 +110,10 @@ class db
             $arrayDados[] = $valor;
         }
 
-        $sql .= ") ";
+        $sql .= " WHERE id = $id ";
 
         $st = $conn->prepare($sql);
         $st->execute($arrayDados);
-
     }
 
     public function destroy($id): array
@@ -152,18 +148,17 @@ class db
         
     }
 
-    public function find($id): array
+    public function find($id)
     {
+        //SELECT * FROM usuario WHERE id = 8;
         $conn = $this->conn();
 
         $sql = "SELECT * FROM $this->table_name WHERE id = ?";
 
-        $st = $conn->prepare(query: $sql);
-
+        $st = $conn->prepare($sql);
         $st->execute([$id]);
 
         return $st->fetchObject();
-
     }
 
    
